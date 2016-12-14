@@ -3,6 +3,8 @@ package pack3.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.asserts.Assertion;
 import org.testng.asserts.SoftAssert;
@@ -17,104 +19,76 @@ import java.util.Random;
 
 public class EditPlayerPage {
 
-    private WebDriver driver;
-    static Random r = new Random();
+    @FindBy(id = "ff14642ac1c__us_email")
+    private WebElement emailCreate;
 
-    public static String Email = createRandEmail();
-    public static String FirstName = createRandString();
-    public static String LastName = createRandString();
-    public static String City =  createRandString();
-    public static String Address = createRandString();
-    public static String Phone = createRandPhone();
+    @FindBy(id = "ff14642ac1c__us_fname")
+    private WebElement firstnameCreate;
+
+    @FindBy(id = "ff14642ac1c__us_lname")
+    private WebElement lastNameCreate;
+
+    @FindBy(id = "ff14642ac1c__us_city")
+    private WebElement cityCreate;
+
+    @FindBy(id = "ff14642ac1c__us_address")
+    private WebElement addressCreate;
+
+    @FindBy(id = "ff14642ac1c__us_phone")
+    private WebElement phoneCreate;
+
+    @FindBy(xpath = ".//*[@class='form_actions_container']/input[@name='button_save']")
+    private WebElement editSaveButton;
+
+
+
+    private WebDriver driver;
 
     public EditPlayerPage(WebDriver driver) {
         this.driver = driver;
+        PageFactory.initElements(driver, this);
     }
 
 
     public void clickOnSaveButton() {
-        WebElement editSaveButton = driver.findElement(By.xpath(".//*[@class='form_actions_container']/input[@name='button_save']"));
         editSaveButton.click();
     }
 
-    public void assertPlayerFields(String Name, String Email, String FirstName, String LastName, String City, String Address, String Phone) {
-       // SoftAssert asert = new SoftAssert();
-        Assert.assertEquals(driver.findElement(By.id("ff14642ac1c__us_login")).getAttribute("value"), Name, "Wrong Username ");
-        Assert.assertEquals(driver.findElement(By.id("ff14642ac1c__us_email")).getAttribute("value"), Email, "Wrong Email  ");
-        Assert.assertEquals(driver.findElement(By.id("ff14642ac1c__us_fname")).getAttribute("value"), FirstName, "Wrong FirstName ");
-        Assert.assertEquals(driver.findElement(By.id("ff14642ac1c__us_lname")).getAttribute("value"), LastName, "Wrong Lastname ");
-        Assert.assertEquals(driver.findElement(By.id("ff14642ac1c__us_city")).getAttribute("value"), City, "Wrong City ");
-        Assert.assertEquals(driver.findElement(By.id("ff14642ac1c__us_address")).getAttribute("value"), Address, "Wrong Address ");
-        Assert.assertEquals(driver.findElement(By.id("ff14642ac1c__us_phone")).getAttribute("value"), Phone, "Wrong Phone ");
-        Assert.assertEquals(driver.findElement(By.id("ff14642ac1c__us_login")).getAttribute("value"), Name, "Wrong Username ");
+    public String getCurrentFieldData(String fieldData) {
+        return driver.findElement(By.xpath(".//*[@id='" + fieldData +"']")).getAttribute("value");
+
     }
 
 
-    public void setEmail() {
-
-        WebElement emailCreate = driver.findElement(By.id("ff14642ac1c__us_email")); //Find E-mail inputfield
+    public void setEmail(String email) {
         emailCreate.clear();
-        emailCreate.sendKeys(Email); //entry random string  in E-mail field
+        emailCreate.sendKeys(email); //entry random string  in E-mail field
     }
 
-    public void setFirstName() {
-        WebElement firstnameCreate = driver.findElement(By.id("ff14642ac1c__us_fname")); //Find First Name inputfield
+    public void setFirstName(String firstname) {
         firstnameCreate.clear();
-        firstnameCreate.sendKeys(FirstName); //entry random string  in First Name field
+        firstnameCreate.sendKeys(firstname); //entry random string  in First Name field
     }
 
-    public void setLastName() {
-        WebElement lastNameCreate = driver.findElement(By.id("ff14642ac1c__us_lname")); //Find Last Name inputfield
+    public void setLastName(String lastname) {
         lastNameCreate.clear();
-        lastNameCreate.sendKeys(LastName); //entry random string  in Last Name field
+        lastNameCreate.sendKeys(lastname); //entry random string  in Last Name field
     }
 
-    public void setCity() {
-        WebElement cityCreate = driver.findElement(By.id("ff14642ac1c__us_city")); //Find City inputfield
+    public void setCity(String city) {
         cityCreate.clear();
-        cityCreate.sendKeys(City); //entry random string  in City field
+        cityCreate.sendKeys(city); //entry random string  in City field
     }
 
-    public void setAddress() {
-        WebElement addressCreate = driver.findElement(By.id("ff14642ac1c__us_address")); //Find Address inputfield
+    public void setAddress(String address) {
         addressCreate.clear();
-        addressCreate.sendKeys(Address); //entry random string  in Address field
+        addressCreate.sendKeys(address); //entry random string  in Address field
     }
 
-    public void setPhone() {
-        WebElement phoneCreate = driver.findElement(By.id("ff14642ac1c__us_phone")); //Find Phone inputfield
+    public void setPhone(String phone) {
         phoneCreate.clear();
-        phoneCreate.sendKeys(Phone); //entry random string  in Phone field
+        phoneCreate.sendKeys(phone); //entry random string  in Phone field
 
     }
 
-
-    public static String createRandString() {
-        int size = 10;
-        String charac = "0123456789abcdefghijklmnopqrstuvwxyz";
-        String s = generateString(r, charac, size);
-        return s;
-    }
-    public static String createRandEmail() {
-        int sizeMail = 6;
-        String charac = "0123456789abcdefghijklmnopqrstuvwxyz";
-        String s = generateString(r, charac, sizeMail) + "@my.com";
-        return s;
-    }
-    public static String createRandPhone() {
-        int size = 10;
-        String ch1 = "0123456789"; //Create the character set for random string
-        String s = generateString(r, ch1, size); //create random string through method "generateString"
-        return s;
-    }
-
-    public static String generateString(Random rng, String characters, int length) //creating random string
-    {
-        char[] text = new char[length]; // Create list of chars
-        for (int i = 0; i < length; i++) //Creating number of random symbols, size equals  variable length
-        {
-            text[i] = characters.charAt(rng.nextInt(characters.length())); //For current step create random character and saves in list
-        }
-        return new String(text);//return list
-    }
 }
